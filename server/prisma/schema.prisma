@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum MetricType {
+  CO2
+  ENERGY
+  WATER
+  WASTE
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  companyId String?  @map("company_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  company Company?          @relation(fields: [companyId], references: [id])
+  reports EmissionReport[]
+
+  @@map("users")
+}
+
+model Company {
+  id        String   @id @default(uuid())
+  name      String
+  industry  String?
+  country   String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  users   User[]
+  reports EmissionReport[]
+  goals   ReductionGoal[]
+
+  @@map("companies")
+}
+
+model EmissionReport {
+  id             String   @id @default(uuid())
+  companyId      String   @map("company_id")
+  year           Int
+  quarter        Int?
+  co2Emissions   Decimal? @map("co2_emissions")
+  energyUsage    Decimal? @map("energy_usage")
+  waterUsage     Decimal? @map("water_usage")
+  wasteGenerated Decimal? @map("waste_generated")
+  renewablePct   Decimal? @map("renewable_pct")
+  notes          String?
+  createdById    String   @map("created_by")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  createdBy User    @relation(fields: [createdById], references: [id])
+
+  @@map("emission_reports")
+}
+
+model ReductionGoal {
+  id            String     @id @default(uuid())
+  companyId     String     @map("company_id")
+  metric        MetricType
+  targetValue   Decimal    @map("target_value")
+  targetYear    Int        @map("target_year")
+  baselineValue Decimal    @map("baseline_value")
+  baselineYear  Int        @map("baseline_year")
+  createdAt     DateTime   @default(now()) @map("created_at")
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@map("reduction_goals")
+}
