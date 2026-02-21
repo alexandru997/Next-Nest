@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CompanyModule } from './company/company.module';
 import { ReportModule } from './report/report.module';
 import { GoalModule } from './goal/goal.module';
+import { RestModule } from './rest/rest.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { GoalModule } from './goal/goal.module';
     CompanyModule,
     ReportModule,
     GoalModule,
+    RestModule,
   ],
 })
 export class AppModule {}
