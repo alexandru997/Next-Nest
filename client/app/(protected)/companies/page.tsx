@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { serverFetch } from '@/lib/graphql/server-fetch';
 import { COMPANIES_QUERY } from '@/lib/graphql/queries';
 import CreateCompanyForm from '@/components/CreateCompanyForm';
+import DeleteCompanyButton from '@/components/company/DeleteCompanyButton';
 
 interface Company {
   id: string;
@@ -64,9 +65,12 @@ export default async function CompaniesPage() {
                     {new Date(c.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-6 py-4 text-sm">
-                    <Link href={`/companies/${c.id}`} className="text-emerald-600 hover:underline">
-                      View →
-                    </Link>
+                    <div className="flex items-center gap-4">
+                      <Link href={`/companies/${c.id}`} className="text-emerald-600 hover:underline">
+                        View →
+                      </Link>
+                      <DeleteCompanyButton id={c.id} />
+                    </div>
                   </td>
                 </tr>
               ))}
