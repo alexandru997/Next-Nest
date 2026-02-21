@@ -18,7 +18,10 @@ export class RestController {
   ) {
     const csv = await this.restService.exportReportsCsv(companyId);
     res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', `attachment; filename="reports-${companyId}.csv"`);
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="reports-${companyId}.csv"`,
+    );
     res.send(csv);
   }
 

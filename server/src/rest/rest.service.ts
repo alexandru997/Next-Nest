@@ -11,7 +11,17 @@ export class RestService {
       orderBy: [{ year: 'desc' }, { quarter: 'desc' }],
     });
 
-    const headers = ['id', 'year', 'quarter', 'co2Emissions', 'energyUsage', 'waterUsage', 'wasteGenerated', 'renewablePct', 'notes'];
+    const headers = [
+      'id',
+      'year',
+      'quarter',
+      'co2Emissions',
+      'energyUsage',
+      'waterUsage',
+      'wasteGenerated',
+      'renewablePct',
+      'notes',
+    ];
     const rows = reports.map((r) => [
       r.id,
       r.year,

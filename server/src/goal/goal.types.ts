@@ -1,4 +1,12 @@
-import { ObjectType, Field, ID, InputType, Int, Float, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  ID,
+  InputType,
+  Int,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { IsNotEmpty, IsInt } from 'class-validator';
 
 export enum MetricType {

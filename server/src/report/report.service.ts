@@ -17,7 +17,9 @@ export class ReportService {
   }
 
   async findOne(id: string) {
-    const report = await this.prisma.emissionReport.findUnique({ where: { id } });
+    const report = await this.prisma.emissionReport.findUnique({
+      where: { id },
+    });
     if (!report) throw new NotFoundException('Report not found');
     return report;
   }
@@ -46,11 +48,19 @@ export class ReportService {
       data: {
         ...(input.year && { year: input.year }),
         ...(input.quarter !== undefined && { quarter: input.quarter }),
-        ...(input.co2Emissions !== undefined && { co2Emissions: input.co2Emissions }),
-        ...(input.energyUsage !== undefined && { energyUsage: input.energyUsage }),
+        ...(input.co2Emissions !== undefined && {
+          co2Emissions: input.co2Emissions,
+        }),
+        ...(input.energyUsage !== undefined && {
+          energyUsage: input.energyUsage,
+        }),
         ...(input.waterUsage !== undefined && { waterUsage: input.waterUsage }),
-        ...(input.wasteGenerated !== undefined && { wasteGenerated: input.wasteGenerated }),
-        ...(input.renewablePct !== undefined && { renewablePct: input.renewablePct }),
+        ...(input.wasteGenerated !== undefined && {
+          wasteGenerated: input.wasteGenerated,
+        }),
+        ...(input.renewablePct !== undefined && {
+          renewablePct: input.renewablePct,
+        }),
         ...(input.notes !== undefined && { notes: input.notes }),
       },
     });
