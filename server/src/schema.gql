@@ -44,15 +44,33 @@ type EmissionReport {
   year: Int!
 }
 
+input GoalInput {
+  baselineValue: Float!
+  baselineYear: Int!
+  companyId: String!
+  metric: MetricType!
+  targetValue: Float!
+  targetYear: Int!
+}
+
 input LoginInput {
   email: String!
   password: String!
 }
 
+enum MetricType {
+  CO2
+  ENERGY
+  WASTE
+  WATER
+}
+
 type Mutation {
   createCompany(input: CompanyInput!): Company!
+  createGoal(input: GoalInput!): ReductionGoal!
   createReport(input: ReportInput!): EmissionReport!
   deleteCompany(id: ID!): Boolean!
+  deleteGoal(id: ID!): Boolean!
   deleteReport(id: ID!): Boolean!
   login(input: LoginInput!): AuthPayload!
   register(input: RegisterInput!): AuthPayload!
@@ -63,9 +81,21 @@ type Mutation {
 type Query {
   companies: [Company!]!
   company(id: ID!): Company!
+  goals(companyId: ID!): [ReductionGoal!]!
   me: AuthPayload!
   report(id: ID!): EmissionReport!
   reports(companyId: ID!, year: Int): [EmissionReport!]!
+}
+
+type ReductionGoal {
+  baselineValue: Float!
+  baselineYear: Int!
+  companyId: String!
+  createdAt: DateTime!
+  id: ID!
+  metric: MetricType!
+  targetValue: Float!
+  targetYear: Int!
 }
 
 input RegisterInput {
