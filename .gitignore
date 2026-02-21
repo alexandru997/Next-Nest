@@ -1,0 +1,20 @@
+node_modules/
+dist/
+.next/
+build/
+coverage/
+
+# Environment files - NICIODATA pe GitHub!
+.env
+.env.local
+.env.production
+
+# Prisma
+generated/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
