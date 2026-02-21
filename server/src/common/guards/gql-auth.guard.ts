@@ -2,16 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
-import type { Request } from 'express';
-
-interface JwtPayload {
-  userId: string;
-  email: string;
-}
-
-interface GqlContext {
-  req: Request & { user?: JwtPayload };
-}
+import type { GqlContext, JwtPayload } from '../types/jwt-payload.interface';
 
 @Injectable()
 export class GqlAuthGuard implements CanActivate {

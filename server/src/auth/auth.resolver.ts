@@ -1,9 +1,10 @@
-import { Resolver, Mutation, Args, Query, Context } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthPayload, RegisterInput, LoginInput } from './auth.types';
 import { GqlAuthGuard } from '../common/guards/gql-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
+import type { JwtPayload } from '../common/types/jwt-payload.interface';
 
 @Resolver()
 export class AuthResolver {
@@ -21,7 +22,7 @@ export class AuthResolver {
 
   @Query(() => AuthPayload)
   @UseGuards(GqlAuthGuard)
-  async me(@CurrentUser() user: any): Promise<AuthPayload> {
+  async me(@CurrentUser() user: JwtPayload): Promise<AuthPayload> {
     return this.authService.getMe(user.userId);
   }
 }
