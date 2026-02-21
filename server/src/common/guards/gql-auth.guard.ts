@@ -2,6 +2,16 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { ConfigService } from '@nestjs/config';
 import * as jwt from 'jsonwebtoken';
+import type { Request } from 'express';
+
+interface JwtPayload {
+  userId: string;
+  email: string;
+}
+
+interface GqlContext {
+  req: Request & { user?: JwtPayload };
+}
 
 @Injectable()
 export class GqlAuthGuard implements CanActivate {
@@ -9,22 +19,17 @@ export class GqlAuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const ctx = GqlExecutionContext.create(context);
-    const { req } = ctx.getContext();
+    const { req } = ctx.getContext<GqlContext>();
 
     const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      throw new UnauthorizedException('No token provided');
-    }
+    if (!authHeader) throw new UnauthorizedException('No token provided');
 
     const token = authHeader.split(' ')[1];
-    if (!token) {
-      throw new UnauthorizedException('Invalid token format');
-    }
+    if (!token) throw new UnauthorizedException('Invalid token format');
 
     try {
       const secret = this.config.get<string>('JWT_SECRET') ?? 'fallback-secret';
-      const decoded = jwt.verify(token, secret);
-      req.user = decoded;
+      req.user = jwt.verify(token, secret) as JwtPayload;
       return true;
     } catch {
       throw new UnauthorizedException('Invalid or expired token');

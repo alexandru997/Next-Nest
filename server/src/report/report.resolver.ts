@@ -5,6 +5,11 @@ import { EmissionReport, ReportInput } from './report.types';
 import { GqlAuthGuard } from '../common/guards/gql-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
 
+interface JwtUser {
+  userId: string;
+  email: string;
+}
+
 @Resolver(() => EmissionReport)
 export class ReportResolver {
   constructor(private reportService: ReportService) {}
@@ -28,7 +33,7 @@ export class ReportResolver {
   @UseGuards(GqlAuthGuard)
   async createReport(
     @Args('input') input: ReportInput,
-    @CurrentUser() user: any,
+    @CurrentUser() user: JwtUser,
   ) {
     return this.reportService.create(input, user.userId);
   }
