@@ -1,5 +1,6 @@
 # Sustainability Dashboard
 
+
 A full-stack web application for tracking corporate environmental metrics — CO₂ emissions, energy consumption, water usage, waste generation and renewable energy adoption — with goal-setting and progress visualisation.
 
 Built as a portfolio project demonstrating production-grade patterns across the entire stack.
