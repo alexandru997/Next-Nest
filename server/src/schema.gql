@@ -29,6 +29,21 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type EmissionReport {
+  co2Emissions: Float
+  companyId: String!
+  createdAt: DateTime!
+  createdById: String!
+  energyUsage: Float
+  id: ID!
+  notes: String
+  quarter: Int
+  renewablePct: Float
+  wasteGenerated: Float
+  waterUsage: Float
+  year: Int!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -36,20 +51,37 @@ input LoginInput {
 
 type Mutation {
   createCompany(input: CompanyInput!): Company!
+  createReport(input: ReportInput!): EmissionReport!
   deleteCompany(id: ID!): Boolean!
+  deleteReport(id: ID!): Boolean!
   login(input: LoginInput!): AuthPayload!
   register(input: RegisterInput!): AuthPayload!
   updateCompany(id: ID!, input: CompanyInput!): Company!
+  updateReport(id: ID!, input: ReportInput!): EmissionReport!
 }
 
 type Query {
   companies: [Company!]!
   company(id: ID!): Company!
   me: AuthPayload!
+  report(id: ID!): EmissionReport!
+  reports(companyId: ID!, year: Int): [EmissionReport!]!
 }
 
 input RegisterInput {
   email: String!
   name: String!
   password: String!
+}
+
+input ReportInput {
+  co2Emissions: Float
+  companyId: String!
+  energyUsage: Float
+  notes: String
+  quarter: Int
+  renewablePct: Float
+  wasteGenerated: Float
+  waterUsage: Float
+  year: Int!
 }
